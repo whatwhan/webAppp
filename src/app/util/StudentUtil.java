@@ -124,8 +124,8 @@ public class StudentUtil {
 		}
 	}
 
-	public   List<ScoreRecord> getScoreList() throws ClientProtocolException, IOException {
-		List<ScoreRecord> list = new ArrayList<ScoreRecord>();
+	public   Map<String,List<ScoreRecord>> getScoreList() throws ClientProtocolException, IOException {
+		
 		DefaultHttpClient client = new DefaultHttpClient();
 		DefaultHttpClient client1 = new DefaultHttpClient();
 		DefaultHttpClient client2 = new DefaultHttpClient();
@@ -149,11 +149,11 @@ public class StudentUtil {
 			String html = EntityUtils.toString(response.getEntity(), "gb2312");
 			client.getConnectionManager().shutdown();
 			//System.out.println("huiui"+html);
-			return parseHtmlForScore(html, list);
+			return HtmlParser.parseHtmlForScore(html);
 		}
 
 		client.getConnectionManager().shutdown();
-		return list;
+		return null;
 	}
 	
 	public   List<ScoreRecord> parseHtmlForScore(String html,
@@ -220,9 +220,9 @@ public class StudentUtil {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public   Map<Integer, Map<Integer, List<Lesson>>> getLessons()
+	public   Map<String, Map<String, List<Lesson>>> getLessons()
 			throws Exception, ClientProtocolException, IOException {
-		Map<Integer, Map<Integer, List<Lesson>>> map = new HashMap<Integer, Map<Integer, List<Lesson>>>();
+		Map<String, Map<String, List<Lesson>>> map = new HashMap<String, Map<String, List<Lesson>>>();
 		if (mCookieStore == null)
 			throw new Exception("you should login before call this method");
 

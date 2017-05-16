@@ -12,10 +12,8 @@
 		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
-
 	<!-- 使用spring组件扫描 -->
 	<context:component-scan base-package="app" />
-
 	<mvc:annotation-driven/>
 	<mvc:annotation-driven ignoreDefaultModelOnRedirect="true">
 		<!-- 这里配置IE的json格式兼容性 -->
@@ -30,20 +28,18 @@
             </mvc:message-converters>
 	</mvc:annotation-driven>
 	
-	<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-    <property name="supportedMediaTypes">
-        <list>
-            <value>text/html;charset=UTF-8</value>
-            <value>application/json;charset=UTF-8</value>
-        </list>
-    </property>
-    <property name="objectMapper">
-        <bean class="org.codehaus.jackson.map.ObjectMapper">
-            <property name="serializationInclusion">
-                <value type="org.codehaus.jackson.map.annotate.JsonSerialize$Inclusion">NON_NULL</value>
-            </property>
-        </bean>
-    </property>
-</bean>
-
+  <context:property-placeholder location="classpath:application.properties"/>
+  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+      <property name="user" value="${jdbc.username}"></property>
+      <property name="password" value="${jdbc.password}"></property>
+      <property name="driverClass" value="${jdbc.driver}"></property>
+      <property name="jdbcUrl" value="${jdbc.url}"></property>
+  </bean>
+ 
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+     <property name="dataSource" ref="dataSource"></property>
+ </bean>
+ <!-- shiro -->
+ <!-- mybaits -->
+ <!-- 声明式事务 -->
 </beans>
